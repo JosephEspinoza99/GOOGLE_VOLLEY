@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.text.BreakIterator;
@@ -35,22 +37,34 @@ public class MainActivity extends AppCompatActivity implements Asynchtask {
         //codigo para concetar a internet
         Bundle bundle = this.getIntent().getExtras();
         Map<String, String> datos = new HashMap<String, String>();
-        WebService ws= new WebService("https://revistas.uteq.edu.ec/ws/login.php?usr="
-                +nombre+"&pass="+contraseña,datos, MainActivity.this, MainActivity.this);
-        ws.execute("GET");
+        datos.put("correo",nombre);
+        datos.put("clave",contraseña);
+        WebService ws= new WebService(" https://api.uealecpeterson.net/public/login"
+                ,datos, MainActivity.this, MainActivity.this);
+        ws.execute("POST");
 
     }
 
     @Override
     public void processFinish(String result) throws JSONException {
         TextView respuesta =findViewById(R.id.respuesta);
-        if (result.equals("Login Correcto!")){
+        JSONObject jsonrespuesta = new JSONObject(result);
+
+        if (jsonrespuesta.has("error"))
+        {
+            respuesta.setText(jsonrespuesta.getString("error"));
+        }
+        else
+        {
+
+            Bundle b = new Bundle();
+            b.putString("TOKEN", jsonrespuesta.getString("access_token"));
             Intent intent = new Intent(MainActivity.this, ListaBancos.class);
+            intent.putExtras(b);
             startActivity(intent);
+
         }
-        else {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
+
+
     }
 }
