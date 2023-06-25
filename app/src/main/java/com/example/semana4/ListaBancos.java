@@ -27,11 +27,12 @@ public class ListaBancos extends AppCompatActivity implements Asynchtask {
         Bundle bundle = this.getIntent().getExtras();
         Map<String, String> datos = new HashMap<String, String>();
         datos.put("fuente","1");
-        WebService ws= new WebService(" https://api.uealecpeterson.net/public/clientes/search"
+        WebService ws= new WebService(" https://api.uealecpeterson.net/public/productos/search"
                 ,datos, ListaBancos.this, ListaBancos.this);
         ws.execute("POST","Authorization","Bearer "+ bundle.getString("TOKEN"));
 
     }
+
 
     @Override
     public void processFinish(String result) throws JSONException {
@@ -39,10 +40,11 @@ public class ListaBancos extends AppCompatActivity implements Asynchtask {
         //Informacion.setText(result);
         String lstBancos="";
         JSONObject JSONOBJ = new  JSONObject(result);
-        JSONArray JSONlista = JSONOBJ.getJSONArray("clientes");
+        JSONArray JSONlista = JSONOBJ.getJSONArray("productos");
         for(int i=0; i< JSONlista.length();i++){
-            JSONObject cliente= JSONlista.getJSONObject(i);
-            lstBancos = lstBancos +" "+i+" "+cliente.getString("nombre").toString()+cliente.getString("direccion").toString();
+            JSONObject producto= JSONlista.getJSONObject(i);
+            lstBancos = lstBancos +" ("+i+") "+producto.getString("barcode").toString()+" "+" "+" "+producto.getString("descripcion").toString()
+                    +producto.getString("costo").toString()+" "+" "+" "+producto.getString("impuesto").toString()+"\n";
 
         }
         Informacion.setText(lstBancos);
