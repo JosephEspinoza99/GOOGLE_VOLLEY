@@ -64,7 +64,8 @@
         android:layout_marginTop="86dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
-        android:inputType="text" />
+        android:inputType="text"
+        android:text="carlos@gmail.com" />
 
     <EditText
         android:id="@+id/contraseña"
@@ -75,7 +76,8 @@
         android:layout_marginTop="145dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
-        android:inputType="numberPassword" />
+        android:inputType="numberPassword"
+        android:text="12345678" />
 
     <TextView
         android:id="@+id/respuesta"
